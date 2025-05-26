@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Results for "<%= searchQuery %>"</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav><a href="/">Home</a> | <a href="/artists">Saved Artists</a></nav>
+  <div class="container">
+    <h2>Search Results for "<%= searchQuery %>"</h2>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+      <p class="message error"><%= error %></p>
+    <% } %>
+
+    <% if (typeof artists !== 'undefined' && artists && artists.length > 0) { %>
+      <ul>
+        <% artists.forEach(artist => { %>
+          <li>
+            <% if (artist.images && artist.images.length > 0) { %>
+              <img src="<%= artist.images[0].url %>" alt="<%= artist.name %>" class="album-art-small">
+            <% } %>
+            <h3><%= artist.name %></h3>
+            <p>Genres: <%= artist.genres && artist.genres.length > 0 ? artist.genres.join(', ') : 'N/A' %></p>
+            
+            <form method="POST" action="/save-artist" style="display:inline;">
+              <input type="hidden" name="spotify_id" value="<%= artist.id %>">
+              <input type="hidden" name="name" value="<%= artist.name %>">
+              <button type="submit">Save</button>
+            </form>
+          </li>
+        <% }); %>
+      </ul>
+    <% } else if (typeof error === 'undefined' || !error) { %>
+      <p>No artists found for "<%= searchQuery %>".</p>
+    <% } %>
+
+    <a href="/">Back to Search</a>
+  </div>
+</body>
+</html>

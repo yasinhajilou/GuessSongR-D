@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Tracks for <%= artistName %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav><a href="/">Home</a> | <a href="/artists">Saved Artists</a></nav>
+  <div class="container">
+    <h1>Top Tracks for <%= artistName %></h1>
+
+    <% if (typeof tracks !== 'undefined' && tracks && tracks.length > 0) { %>
+      <% tracks.forEach(track => { %>
+        <div class="track-item">
+          <% if (track.album.images && track.album.images.length > 0) { %>
+            <img src="<%= track.album.images[0].url %>" alt="Album art for <%= track.album.name %>" class="album-art-small">
+          <% } %>
+          <h3><%= track.name %></h3>
+          <p>Album: <%= track.album.name %></p>
+          <% if (track.preview_url) { %>
+            <audio controls src="<%= track.preview_url %>">
+              Your browser does not support the audio element.
+            </audio>
+          <% } else { %>
+            <p>No preview available for this track.</p>
+          <% } %>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <p>No top tracks found for this artist on Spotify, or an error occurred.</p>
+    <% } %>
+
+    <p><a href="/artists">Back to Saved Artists</a></p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess The Song</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav><a href="/">Home</a> | <a href="/artists">Saved Artists</a></nav>
+  <div class="container">
+    <h1><%= message %></h1>
+
+    <form method="GET" action="/search-artist">
+      <input type="text" name="query" placeholder="Search for an artist..." required>
+      <button type="submit">Search</button>
+    </form>
+  </div>
+</body>
+</html>

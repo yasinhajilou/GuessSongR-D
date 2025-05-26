@@ -1,0 +1,92 @@
+body {
+    font-family: sans-serif;
+    margin: 20px;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+}
+nav {
+    background: #333;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+nav a {
+    color: white;
+    margin-right: 15px;
+    text-decoration: none;
+}
+nav a:hover {
+    text-decoration: underline;
+}
+.container { /* Optional: A class to wrap main content */
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+h1, h2, h3 {
+    color: #333;
+}
+input[type="text"], button, input[type="submit"] {
+    padding: 10px;
+    margin-right: 5px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+button, input[type="submit"] {
+    background-color: #5cb85c;
+    color: white;
+    cursor: pointer;
+    border-color: #4cae4c;
+}
+button:hover, input[type="submit"]:hover {
+    background-color: #4cae4c;
+}
+.message {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 3px;
+}
+.success {
+    background-color: #dff0d8;
+    color: #3c763d;
+    border: 1px solid #d6e9c6;
+}
+.error {
+    background-color: #f2dede;
+    color: #a94442;
+    border: 1px solid #ebccd1;
+}
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+ul li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+ul li a {
+    text-decoration: none;
+    color: #337ab7;
+}
+ul li a:hover {
+    text-decoration: underline;
+}
+img.album-art-small { /* Class for consistent small album art */
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+.track-item { /* Class for track items for better spacing */
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+.track-item:last-child {
+    border-bottom: none;
+}
+audio {
+    margin-top: 5px;
+    display: block;
+}

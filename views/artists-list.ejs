@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saved Artists</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav><a href="/">Home</a> | <a href="/artists">Saved Artists</a></nav>
+  <div class="container">
+    <h1>Saved Artists</h1>
+
+    <% if (locals.message) { %>
+      <p class="message <%= message.includes('successfully') ? 'success' : 'error' %>"><%= message %></p>
+    <% } %>
+
+    <% if (typeof artists !== 'undefined' && artists && artists.length > 0) { %>
+      <ul>
+        <% artists.forEach(artist => { %>
+          <li>
+            <a href="/artist/<%= artist.spotify_id %>/tracks"><%= artist.name %></a>
+          </li>
+        <% }); %>
+      </ul>
+    <% } else { %>
+      <p>No artists saved yet. Go <a href="/">search</a> and save some!</p>
+    <% } %>
+  </div>
+</body>
+</html>
