@@ -45,6 +45,7 @@ A web application to search for artists on Spotify, save your favorites, and bro
     *   `SPOTIFY_CLIENT_ID`: Your Spotify application Client ID.
     *   `SPOTIFY_CLIENT_SECRET`: Your Spotify application Client Secret.
     *   `PORT`: The port on which the application will run (defaults to 3000 if not specified).
+    *   `SPOTIFY_MARKET`: (Optional) Your 2-letter ISO country code (e.g., "CA" for Canada, "GB" for Great Britain). Setting this to your local Spotify market can improve the relevance of track results and the availability of track preview URLs. Defaults to "US" if not set.
 
 ## Running the Application
 

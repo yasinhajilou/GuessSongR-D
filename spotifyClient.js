@@ -72,7 +72,7 @@ async function searchArtists(query) {
   }
 }
 
-async function getArtistTopTracks(artistId) {
+async function getArtistTopTracks(artistId, marketCode) {
   const token = await getAccessToken();
   if (!token) {
     console.error('Cannot fetch top tracks without an access token.');
@@ -80,13 +80,15 @@ async function getArtistTopTracks(artistId) {
     return null;
   }
 
+  const effectiveMarket = marketCode || process.env.SPOTIFY_MARKET || 'US';
+
   try {
     const response = await axios.get(`https://api.spotify.com/v1/artists/${artistId}/top-tracks`, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
       params: {
-        market: 'US', // As per requirement
+        market: effectiveMarket,
       },
     });
 
