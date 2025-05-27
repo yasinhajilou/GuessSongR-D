@@ -103,8 +103,18 @@ async function getArtistTopTracks(artistId, marketCode) {
               console.log(`[DIAGNOSTIC] spotifyClient.js - Attempting to find preview for: ${query}`);
               const previewUrl = await findPreview(query);
               if (previewUrl) {
-                console.log(`[DIAGNOSTIC] spotifyClient.js - Preview found for ${query}: ${previewUrl}`);
-                track.preview_url = previewUrl;
+                console.log(`[DIAGNOSTIC] spotifyClient.js - Object received from findPreview for ${query}:`);
+                console.log(JSON.stringify(previewUrl, null, 2)); // Log the full object structure
+
+                // For now, to prevent errors with assigning an object to a URL,
+                // let's temporarily only assign if it's a string, or assign a known non-playable string.
+                // This is so the app doesn't break entirely due to type mismatch in the audio tag's src.
+                if (typeof previewUrl === 'string') {
+                  track.preview_url = previewUrl;
+                } else {
+                  // track.preview_url = "is_object_check_logs"; // Or keep it null
+                  console.log(`[DIAGNOSTIC] spotifyClient.js - findPreview returned an object, not assigning to track.preview_url yet.`);
+                }
               } else {
                 console.log(`[DIAGNOSTIC] spotifyClient.js - No preview found by finder for: ${query}`);
               }
