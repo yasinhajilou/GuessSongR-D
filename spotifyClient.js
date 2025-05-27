@@ -1,5 +1,6 @@
 const axios = require('axios');
 const dotenv = require('dotenv');
+const findPreview = require('spotify-preview-finder');
 
 dotenv.config(); // Ensure environment variables are loaded
 
@@ -81,7 +82,6 @@ async function getArtistTopTracks(artistId, marketCode) {
   }
 
   const effectiveMarket = marketCode || process.env.SPOTIFY_MARKET || 'US';
-  console.log('[DIAGNOSTIC] spotifyClient.js - Effective market for getArtistTopTracks:', effectiveMarket);
 
   try {
     const response = await axios.get(`https://api.spotify.com/v1/artists/${artistId}/top-tracks`, {
@@ -94,16 +94,34 @@ async function getArtistTopTracks(artistId, marketCode) {
     });
 
     if (response.data && response.data.tracks) {
-      if (response.data && response.data.tracks && response.data.tracks.length > 0 && effectiveMarket === 'CA') {
-        console.log('[DIAGNOSTIC] spotifyClient.js - Raw track data from Spotify (up to 3 tracks for market CA):');
-        for (let i = 0; i < Math.min(response.data.tracks.length, 3); i++) {
-          console.log(JSON.stringify(response.data.tracks[i], null, 2)); // Pretty print the track object
-        }
+      const tracksFromSpotify = response.data.tracks;
+      if (tracksFromSpotify && tracksFromSpotify.length > 0) {
+        const processedTracks = await Promise.all(tracksFromSpotify.map(async (track) => {
+          if (!track.preview_url) {
+            try {
+              const query = `${track.artists.map(a => a.name).join(', ')} - ${track.name}`;
+              console.log(`[DIAGNOSTIC] spotifyClient.js - Attempting to find preview for: ${query}`);
+              const previewUrl = await findPreview(query);
+              if (previewUrl) {
+                console.log(`[DIAGNOSTIC] spotifyClient.js - Preview found for ${query}: ${previewUrl}`);
+                track.preview_url = previewUrl;
+              } else {
+                console.log(`[DIAGNOSTIC] spotifyClient.js - No preview found by finder for: ${query}`);
+              }
+            } catch (error) {
+              console.error(`[ERROR] spotifyClient.js - Error using spotify-preview-finder for track "${track.name}":`, error.message);
+              // Keep track.preview_url as null
+            }
+          }
+          return track; // Return the track, modified or not
+        }));
+        return processedTracks; // Return the array of processed tracks
+      } else {
+        return []; // Return empty array if Spotify API returned no tracks
       }
-      return response.data.tracks;
     } else {
       console.warn(`No tracks found for artist ID: ${artistId}`);
-      return []; // Return empty array if tracks are not present
+      return []; // Return empty array if tracks are not present in the response
     }
   } catch (error) {
     console.error(`Error fetching top tracks for artist ID ${artistId}:`, error.response ? error.response.data : error.message);
