@@ -81,6 +81,7 @@ async function getArtistTopTracks(artistId, marketCode) {
   }
 
   const effectiveMarket = marketCode || process.env.SPOTIFY_MARKET || 'US';
+  console.log('[DIAGNOSTIC] spotifyClient.js - Effective market for getArtistTopTracks:', effectiveMarket);
 
   try {
     const response = await axios.get(`https://api.spotify.com/v1/artists/${artistId}/top-tracks`, {
@@ -93,6 +94,12 @@ async function getArtistTopTracks(artistId, marketCode) {
     });
 
     if (response.data && response.data.tracks) {
+      if (response.data && response.data.tracks && response.data.tracks.length > 0 && effectiveMarket === 'CA') {
+        console.log('[DIAGNOSTIC] spotifyClient.js - Raw track data from Spotify (up to 3 tracks for market CA):');
+        for (let i = 0; i < Math.min(response.data.tracks.length, 3); i++) {
+          console.log(JSON.stringify(response.data.tracks[i], null, 2)); // Pretty print the track object
+        }
+      }
       return response.data.tracks;
     } else {
       console.warn(`No tracks found for artist ID: ${artistId}`);
